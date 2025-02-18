@@ -19,13 +19,20 @@ public class WordCountMapper extends Mapper<Object, Text, Text, IntWritable> {
 
 		// StringTokenizer itr = new StringTokenizer(value.toString());
 		String[] fields = value.toString().split(",");
-		if (!fields[0].equals("YEAR")){
-			word.set(fields[7]);
-			context.write(word, counter);
+		// if (!fields[0].equals("YEAR")) {
+		// word.set(fields[7]);
+		// context.write(word, counter);
+		// }
+		if (fields.length > 8) {
+			String oAirport = fields[7];
+			if (!oAirport.equals("ORIGIN_AIRPORT") && !oAirport.isEmpty()) {
+				word.set(oAirport);
+				context.write(word, counter);
+			}
 		}
 		// while (itr.hasMoreTokens()) {
-		// 	word.set(itr.nextToken());
-		// 	context.write(word, counter);
+		// word.set(itr.nextToken());
+		// context.write(word, counter);
 		// }
 	}
 }

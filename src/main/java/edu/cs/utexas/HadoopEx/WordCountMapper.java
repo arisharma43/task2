@@ -14,13 +14,18 @@ public class WordCountMapper extends Mapper<Object, Text, Text, IntWritable> {
 	// Create a hadoop text object to store words
 	private Text word = new Text();
 
-	public void map(Object key, Text value, Context context) 
+	public void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
-		
-		StringTokenizer itr = new StringTokenizer(value.toString());
-		while (itr.hasMoreTokens()) {
-			word.set(itr.nextToken());
+
+		// StringTokenizer itr = new StringTokenizer(value.toString());
+		String[] fields = value.toString().split(",");
+		if (!fields[0].equals("YEAR")){
+			word.set(fields[7]);
 			context.write(word, counter);
 		}
+		// while (itr.hasMoreTokens()) {
+		// 	word.set(itr.nextToken());
+		// 	context.write(word, counter);
+		// }
 	}
 }

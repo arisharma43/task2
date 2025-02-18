@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Iterator;
+import java.util.Comparator;
 
 public class TopKReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
-    private PriorityQueue<WordAndCount> pq = new PriorityQueue<WordAndCount>(10);;
+    // private PriorityQueue<WordAndCount> pq = new
+    // PriorityQueue<WordAndCount>(10);;
+    private PriorityQueue<WordAndCount> pq = new PriorityQueue<>(3, Comparator.comparingDouble(WordAndCount::getRatio));
 
     private Logger logger = Logger.getLogger(TopKReducer.class);
 

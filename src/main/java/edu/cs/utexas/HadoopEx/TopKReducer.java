@@ -14,12 +14,12 @@ import java.util.PriorityQueue;
 import java.util.Iterator;
 import java.util.Comparator;
 
-public class TopKReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class TopKReducer extends Reducer<Text, Text, Text, Text> {
 
     // private PriorityQueue<WordAndCount> pq = new
     // PriorityQueue<WordAndCount>(10);;
     private PriorityQueue<WordAndCount> pq = new PriorityQueue<>(3, Comparator.reverseOrder());
- 
+
     private Logger logger = Logger.getLogger(TopKReducer.class);
 
     // public void setup(Context context) {
@@ -36,29 +36,20 @@ public class TopKReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void reduce(Text key, Iterable<IntWritable> values, Context context)
-            throws IOException, InterruptedException {
+    public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        for (Text value : values) {
+            try {
+                double delayRatio = Double.parseDouble(value.toString());
 
-        // A local counter just to illustrate the number of values here!
-        int counter = 0;
+                pq.add(new WordAndCount(new Text(key), delayRatio));
 
-        // size of values is 1 because key only has one distinct value
-        for (IntWritable value : values) {
-            counter = counter + 1;
-            logger.info("Reducer Text: counter is " + counter);
-            logger.info("Reducer Text: Add this item  " + new WordAndCount(key, value).toString());
-
-            pq.add(new WordAndCount(new Text(key), new IntWritable(value.get())));
-
-            logger.info("Reducer Text: " + key.toString() + " , Count: " + value.toString());
-            logger.info("PQ Status: " + pq.toString());
+                if (pq.size() > 3) {
+                    pq.poll(); // Remove the lowest ratio
+                }
+            } catch (NumberFormatException e) {
+                // Ignore malformed data
+            }
         }
-
-        // keep the priorityQueue size <= heapSize
-        while (pq.size() > 3) {
-            pq.poll();
-        }
-
     }
 
     public void cleanup(Context context) throws IOException, InterruptedException {
@@ -78,7 +69,7 @@ public class TopKReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
         Collections.reverse(values);
 
         for (WordAndCount value : values) {
-            context.write(value.getWord(), value.getCount());
+            context.write(value.getWord(), new Text(String.format("%.2f", value.getCount())));
             logger.info("TopKReducer - Top-10 Words are:  " + value.getWord() + "  Count:" + value.getCount());
         }
 

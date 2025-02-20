@@ -41,13 +41,12 @@ public class WordCountTopKDriver extends Configured implements Tool {
 
 			// specify a Mapper
 			job.setMapperClass(WordCountMapper.class);
-			job.setCombinerClass(WordCountReducer.class);
 			// specify a Reducer
 			job.setReducerClass(WordCountReducer.class);
 
 			// specify output types
 			job.setOutputKeyClass(Text.class);
-			//task 2:
+			// task 2:
 			job.setOutputValueClass(Text.class);
 
 			// specify input and output directories

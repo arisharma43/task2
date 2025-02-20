@@ -56,7 +56,7 @@ public class TopKReducer extends Reducer<Text, Text, Text, Text> {
         logger.info("TopKReducer cleanup cleanup.");
         logger.info("pq.size() is " + pq.size());
 
-        List<WordAndCount> values = new ArrayList<WordAndCount>(10);
+        List<WordAndCount> values = new ArrayList<>(pq);
 
         while (pq.size() > 0) {
             values.add(pq.poll());
@@ -66,7 +66,7 @@ public class TopKReducer extends Reducer<Text, Text, Text, Text> {
         logger.info(values.toString());
 
         // reverse so they are ordered in descending order
-        Collections.reverse(values);
+        values.sort(Comparator.reverseOrder());
 
         for (WordAndCount value : values) {
             context.write(value.getWord(), new Text(String.format("%.2f", value.getCount())));

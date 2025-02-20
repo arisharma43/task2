@@ -30,7 +30,8 @@ public class WordCountReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         if (totalFlights > 0) {
-            context.write(key, new Text(String.format("%.2f", (double) totalDelay / totalFlights)));
+            double delayRatio = (double) totalDelay / totalFlights;
+            context.write(key, new Text(String.format("%.2f", delayRatio)));
         }
     }
 }

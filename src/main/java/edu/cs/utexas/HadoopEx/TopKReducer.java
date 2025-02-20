@@ -58,7 +58,7 @@ public class TopKReducer extends Reducer<Text, Text, Text, Text> {
 
         List<WordAndCount> values = new ArrayList<>(pq);
 
-        while (pq.size() > 0) {
+        while (!pq.isEmpty()) {
             values.add(pq.poll());
         }
 

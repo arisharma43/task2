@@ -50,22 +50,4 @@ public class WordCountMapper extends Mapper<Object, Text, Text, Text> {
 			}
 		}
 	}
-
-	// public void map(Object key, Text value, Context context) throws IOException,
-	// InterruptedException {
-	// String[] columns = value.toString().split(",");
-
-	// // Ensure there are enough columns and skip the header row
-	// if (columns.length > 11 && !columns[0].equals("YEAR")) {
-	// try {
-	// airline.set(columns[4]); // AIRLINE column
-	// int delay = columns[11].isEmpty() ? 0 : Integer.parseInt(columns[11]); //
-	// DEPARTURE_DELAY
-	// delayAndCount.set(delay + ",1"); // Emit (AIRLINE, "DELAY,1")
-	// context.write(airline, delayAndCount);
-	// } catch (NumberFormatException e) {
-	// // Ignore malformed data
-	// }
-	// }
-	// }
 }

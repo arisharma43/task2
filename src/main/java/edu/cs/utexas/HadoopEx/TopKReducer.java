@@ -70,7 +70,7 @@ public class TopKReducer extends Reducer<Text, Text, Text, Text> {
 
         for (WordAndCount value : values) {
             context.write(value.getWord(), new Text(String.format("%.2f", value.getCount())));
-            logger.info("TopKReducer - Top-10 Words are:  " + value.getWord() + "  Count:" + value.getCount());
+            logger.info("TopKReducer - Top-3 are:  " + value.getWord() + "  Count:" + value.getCount());
         }
 
     }

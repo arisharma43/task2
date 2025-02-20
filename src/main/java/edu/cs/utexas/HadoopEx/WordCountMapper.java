@@ -19,18 +19,8 @@ public class WordCountMapper extends Mapper<Object, Text, Text, Text> {
 			throws IOException, InterruptedException {
 
 		String[] fields = value.toString().split(",");
-		// Task 1:
-		// if (fields.length > 8) {
-		// String oAirport = fields[7];
-		// if (!oAirport.equals("ORIGIN_AIRPORT") && !oAirport.isEmpty()) {
-		// word.set(oAirport);
-		// context.write(word, counter);
-		// }
-		// }
-		// Task 2:
 		if (fields.length > 11 && !fields[0].equals("YEAR")) { // Ensure there are
 			// enough columns
-			// String airline = fields[4];
 			String delay = fields[11];
 
 			if (!fields[4].equals("AIRLINE") && !fields[4].isEmpty()) {
